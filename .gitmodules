@@ -1,0 +1,6 @@
+[submodule "report"]
+	path = report
+	url = https://git.overleaf.com/5c499feb95d38a3a6ff8fe45
+[submodule "robotic_warehouse"]
+	path = robotic_warehouse
+	url = https://github.com/kex2019/robotic_warehouse.git
