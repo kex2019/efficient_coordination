@@ -4,3 +4,9 @@
 [submodule "robotic_warehouse"]
 	path = robotic_warehouse
 	url = https://github.com/kex2019/robotic_warehouse.git
+[submodule "strategies/baselines_random"]
+	path = strategies/baselines_random
+	url = https://github.com/kex2019/baselines_random.git
+[submodule "utilities"]
+	path = utilities
+	url = https://github.com/kex2019/utilities.git
