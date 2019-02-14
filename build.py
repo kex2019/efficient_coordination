@@ -1,8 +1,10 @@
+import robotic_warehouse_utils.data_collection as data_collection
 import importlib
 import logging
 import colorlog
 import pandas as pd
 import argparse
+import time
 logger = logging.getLogger("Kex2019")
 
 handler = colorlog.StreamHandler()
@@ -41,7 +43,12 @@ def eval_strategies() -> None:
         module_spec = importlib.util.find_spec(module_name)
         if module_spec:
             logger.info("Strategy {} - {}".format(index, name))
-            E(name, importlib.import_module(module_name))
+            timestamp = time.time()
+            try:
+                E(name, importlib.import_module(module_name))
+            except data_collection.EvaluationDone:
+                logger.info(
+                    "Duration {} seconds".format(time.time() - timestamp))
         else:
             logger.error("Strategy {} - {} Cannot find Module {}".format(
                 index, name, module_name))
