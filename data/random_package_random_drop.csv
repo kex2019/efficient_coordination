@@ -1,6 +1,0 @@
-mean_decision_time,name,points,steps,timestamp,total_steps
-0.02784406571161179,random_package_random_drop,-1.0,63.0,1550569967.3884318,63.0
-0.02722389047796076,random_package_random_drop,1.0,66.0,1550569967.431016,66.0
-0.027061576273903917,random_package_random_drop,-1.0,67.0,1550569967.447377,67.0
-0.02686986151863547,random_package_random_drop,-1.0,68.0,1550569967.461375,68.0
-0.026729822158813477,random_package_random_drop,-1.0,69.0,1550569967.4785879,69.0

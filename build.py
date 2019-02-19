@@ -28,10 +28,20 @@ def rprd_eval(name: str, module: "f: eval") -> None:
         shelve_height=5,
         steps=100)
 
+def cwcw_eval(name: str, module: "f: eval") -> None:
+    module.evaluate(
+        render=True,
+        robots=20,
+        spawn=100,
+        shelve_length=5,
+        shelve_width=5,
+        shelve_height=5,
+        steps=1000)
 
 STRATEGIES = {
     "random_package_random_drop":
-    ["baselines_random.random_package_random_drop", rprd_eval]
+    ["baselines_random.random_package_random_drop", rprd_eval],
+    "closest_ware_closest_drop": ["baseline_greedy_closest_wares.closest_ware_closest_drop", cwcw_eval]
     # TODO ... add more
 }
 
