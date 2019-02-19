@@ -10,3 +10,6 @@
 [submodule "utilities"]
 	path = utilities
 	url = https://github.com/kex2019/utilities.git
+[submodule "strategies/baselines_greedy_closest_wares"]
+	path = strategies/baselines_greedy_closest_wares
+	url = git@github.com:kex2019/baselines_greedy_closest_wares.git
