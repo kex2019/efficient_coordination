@@ -57,7 +57,6 @@ def eval_strategies() -> None:
 
 
 def make_plots() -> None:
-
     pass
 
 
