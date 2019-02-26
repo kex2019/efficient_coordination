@@ -56,9 +56,13 @@ def validate_submodules(logger) -> bool:
         return True
 
 
-def install_submodule_dependencies(logger) -> bool:
+def install_submodule_dependencies(logger, user) -> bool:
     cwd = os.getcwd()
     success = True
+    command = ["python3", "setup.py", "install"]
+    if user is not None and user:
+        command.append("--user")
+
     for module in SUBMODULES:
         if os.path.isdir(module):
             os.chdir(module)
@@ -67,8 +71,7 @@ def install_submodule_dependencies(logger) -> bool:
                 logger.info("Installing {}".format(module))
 
                 try:
-                    subprocess.run(["python3", "setup.py",
-                                    "install"]).check_returncode()
+                    subprocess.run(command).check_returncode()
                 except subprocess.CalledProcessError as e:
                     logger.error(
                         "Setup of {} failed -- Reason: {} -- Continuing with others".
@@ -93,7 +96,7 @@ def install_submodule_dependencies(logger) -> bool:
     return success
 
 
-def run(logger) -> None:
+def run(logger, user) -> None:
     if not setup_submodules(logger):
         logger.error("Stopping installation -- Submodule setup failed")
 
@@ -102,7 +105,7 @@ def run(logger) -> None:
         logger.error("Stopping installation -- Submodule validation failed")
 
     # TODO: Add some fall backs?
-    if not install_submodule_dependencies(logger):
+    if not install_submodule_dependencies(logger, user):
         logger.error(
             "Installation of some dependencies failed -- maybe that is ok?")
 

@@ -95,10 +95,14 @@ if __name__ == "__main__":
         "--install",
         help="Install everything -- submodules -- deps -- the whole bunch",
         action="store_true")
+    parser.add_argument(
+        "--user",
+        help="Install in user",
+        action="store_true")
     args = parser.parse_args()
 
     if args.install:
-        scripts.install.run(logger)
+        scripts.install.run(logger, args.user)
 
     if args.evaluate:
         eval_strategies()
