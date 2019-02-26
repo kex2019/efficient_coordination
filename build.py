@@ -5,6 +5,7 @@ import colorlog
 import pandas as pd
 import argparse
 import time
+import scripts.install
 logger = logging.getLogger("Kex2019")
 
 handler = colorlog.StreamHandler()
@@ -79,7 +80,14 @@ if __name__ == "__main__":
         "--evaluate", help="Evaluate Strategies", action="store_true")
     parser.add_argument(
         "--make_plots", help="Make plots for results", action="store_true")
+    parser.add_argument(
+        "--install",
+        help="Install everything -- submodules -- deps -- the whole bunch",
+        action="store_true")
     args = parser.parse_args()
+
+    if args.install:
+        scripts.install.run(logger)
 
     if args.evaluate:
         eval_strategies()
