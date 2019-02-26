@@ -4,7 +4,8 @@ import subprocess
 
 SUBMODULES = [
     "robotic_warehouse", "utilities",
-    "strategies/baselines_greedy_closest_wares", "strategies/baselines_random"
+    "strategies/baselines_greedy_closest_wares", "strategies/baselines_random",
+    "strategies/strategy_heuristic"
 ]
 
 
