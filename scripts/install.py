@@ -57,6 +57,7 @@ def validate_submodules(logger) -> bool:
 
 def install_submodule_dependencies(logger) -> bool:
     cwd = os.getcwd()
+    os.mkdir("data")
     success = True
     for module in SUBMODULES:
         if os.path.isdir(module):
