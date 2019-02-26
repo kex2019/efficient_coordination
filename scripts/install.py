@@ -57,7 +57,6 @@ def validate_submodules(logger) -> bool:
 
 def install_submodule_dependencies(logger) -> bool:
     cwd = os.getcwd()
-    os.mkdir("data")
     success = True
     for module in SUBMODULES:
         if os.path.isdir(module):
@@ -105,3 +104,6 @@ def run(logger) -> None:
     if not install_submodule_dependencies(logger):
         logger.error(
             "Installation of some dependencies failed -- maybe that is ok?")
+
+    if not os.path.isdir("data"):
+        os.mkdir("data")
