@@ -20,36 +20,70 @@ logger.addHandler(handler)
 
 
 def rprd_eval(name: str, module: "f: eval") -> None:
-    module.evaluate(
-        render=False,
-        robots=20,
-        spawn=100,
-        shelve_length=5,
-        shelve_width=5,
-        shelve_height=5,
-        steps=1000)
+    timestamp = time.time()
+    try:
+        module.evaluate(
+            render=False,
+            robots=20,
+            spawn=100,
+            shelve_length=5,
+            shelve_width=5,
+            shelve_height=5,
+            periodicity_lower=400,
+            periodicity_upper=5000,
+            steps=1000)
+    except data_collection.EvaluationDone:
+        logger.info("Duration {} seconds".format(time.time() - timestamp))
 
 
 def cwcw_eval(name: str, module: "f: eval") -> None:
-    module.evaluate(
-        render=False,
-        robots=20,
-        spawn=100,
-        shelve_length=5,
-        shelve_width=5,
-        shelve_height=5,
-        steps=1000)
+    timestamp = time.time()
+    try:
+        module.evaluate(
+            render=False,
+            robots=20,
+            spawn=100,
+            shelve_length=5,
+            shelve_width=5,
+            shelve_height=5,
+            periodicity_lower=400,
+            periodicity_upper=5000,
+            steps=1000)
+    except data_collection.EvaluationDone:
+        logger.info("Duration {} seconds".format(time.time() - timestamp))
 
 
-def sh_eval(name, module: "f: eval") -> None:
-    module.evaluate(
-        render=False,
-        robots=20,
-        spawn=100,
-        shelve_length=5,
-        shelve_width=5,
-        shelve_height=5,
-        steps=1000)
+def sh_eval_center(name, module: "f: eval") -> None:
+    timestamp = time.time()
+    try:
+        module.evaluate(
+            render=False,
+            robots=20,
+            spawn=40,
+            shelve_length=5,
+            shelve_width=5,
+            shelve_height=5,
+            periodicity_lower=400,
+            periodicity_upper=5000,
+            steps=1000)
+    except data_collection.EvaluationDone:
+        logger.info("Duration {} seconds".format(time.time() - timestamp))
+
+    timestamp = time.time()
+    try:
+        module.evaluate(
+            render=False,
+            robots=20,
+            spawn=40,
+            shelve_length=5,
+            shelve_width=3,
+            shelve_height=3,
+            periodicity_lower=400,
+            periodicity_upper=5000,
+            steps=1000,
+            even=True)
+    except data_collection.EvaluationDone:
+        logger.info("Duration {} seconds".format(time.time() - timestamp))
 
 
 STRATEGIES = {
@@ -57,7 +91,8 @@ STRATEGIES = {
     ["baselines_random.random_package_random_drop", rprd_eval],
     "closest_ware_closest_drop":
     ["baseline_greedy_closest_wares.closest_ware_closest_drop", cwcw_eval],
-    "strategy_heuristic": ["strategy_heuristic.strategy_heuristic", sh_eval]
+    "strategy_heuristic":
+    ["strategy_heuristic.strategy_heuristic", sh_eval_center]
 }
 
 
@@ -68,12 +103,7 @@ def eval_strategies() -> None:
         module_spec = importlib.util.find_spec(module_name)
         if module_spec:
             logger.info("Strategy {} - {}".format(index, name))
-            timestamp = time.time()
-            try:
-                E(name, importlib.import_module(module_name))
-            except data_collection.EvaluationDone:
-                logger.info(
-                    "Duration {} seconds".format(time.time() - timestamp))
+            E(name, importlib.import_module(module_name))
         else:
             logger.error("Strategy {} - {} Cannot find Module {}".format(
                 index, name, module_name))
@@ -95,10 +125,7 @@ if __name__ == "__main__":
         "--install",
         help="Install everything -- submodules -- deps -- the whole bunch",
         action="store_true")
-    parser.add_argument(
-        "--user",
-        help="Install in user",
-        action="store_true")
+    parser.add_argument("--user", help="Install in user", action="store_true")
     args = parser.parse_args()
 
     if args.install:
