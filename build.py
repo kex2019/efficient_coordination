@@ -53,7 +53,7 @@ def cwcw_eval(name: str, module: "f: eval") -> None:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
 
-def sh_eval_center(name, module: "f: eval") -> None:
+def sh_eval(name, module: "f: eval") -> None:
     timestamp = time.time()
     try:
         module.evaluate(
@@ -86,13 +86,30 @@ def sh_eval_center(name, module: "f: eval") -> None:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
 
+def pfe_eval(name, module: "f: eval") -> None:
+    timestamp = time.time()
+    try:
+        module.evaluate(
+            render=False,
+            robots=20,
+            spawn=40,
+            shelve_length=5,
+            shelve_width=5,
+            shelve_height=5,
+            periodicity_lower=400,
+            periodicity_upper=5000,
+            steps=1000)
+    except data_collection.EvaluationDone:
+        logger.info("Duration {} seconds".format(time.time() - timestamp))
+
+
 STRATEGIES = {
     "random_package_random_drop":
     ["baselines_random.random_package_random_drop", rprd_eval],
     "closest_ware_closest_drop":
     ["baseline_greedy_closest_wares.closest_ware_closest_drop", cwcw_eval],
-    "strategy_heuristic":
-    ["strategy_heuristic.strategy_heuristic", sh_eval_center]
+    "strategy_heuristic": ["strategy_heuristic.strategy_heuristic", sh_eval],
+    "potential_field_evolution": ["potential_field_evolution.pfe", pfe_eval]
 }
 
 

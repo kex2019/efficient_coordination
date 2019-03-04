@@ -16,3 +16,6 @@
 [submodule "strategies/strategy_heuristic"]
 	path = strategies/strategy_heuristic
 	url = https://github.com/kex2019/strategy_heuristic.git
+[submodule "strategies/strategy_potential_field_evol"]
+	path = strategies/strategy_potential_field_evol
+	url = https://github.com/kex2019/strategy_potential_field_evol.git
