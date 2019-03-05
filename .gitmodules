@@ -19,3 +19,6 @@
 [submodule "strategies/strategy_potential_field_evol"]
 	path = strategies/strategy_potential_field_evol
 	url = https://github.com/kex2019/strategy_potential_field_evol.git
+[submodule "Robot"]
+	path = Robot
+	url = https://github.com/kex2019/Robot.git
