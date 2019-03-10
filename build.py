@@ -6,6 +6,9 @@ import pandas as pd
 import argparse
 import time
 import scripts.install
+import scripts.plot
+import matplotlib.pyplot as plt
+import numpy as np
 logger = logging.getLogger("Kex2019")
 
 handler = colorlog.StreamHandler()
@@ -18,20 +21,33 @@ handler.setFormatter(formatter)
 logger.setLevel(20)
 logger.addHandler(handler)
 
+RENDER = False
+DEFAULT_ROBOTS = 5
+DEFAULT_SPAWN = 40
+DEFAULT_SHELVE_LENGTH = 3
+DEFAULT_SHELVE_WIDTH = 3
+DEFAULT_SHELVE_HEIGHT = 3
+DEFAULT_PERIODICITY_LOWER = 500
+DEFAULT_PERIODICITY_UPPER = 700
+DEFAULT_STEPS = 4000
+DEFAULT_SEED = int(np.random.rand() * 3000)
+
 
 def rprd_eval(name: str, module: "f: eval") -> None:
     timestamp = time.time()
     try:
         module.evaluate(
-            render=False,
-            robots=20,
-            spawn=100,
-            shelve_length=5,
-            shelve_width=5,
-            shelve_height=5,
-            periodicity_lower=400,
-            periodicity_upper=5000,
-            steps=1000)
+            render=RENDER,
+            robots=DEFAULT_ROBOTS,
+            spawn=DEFAULT_SPAWN,
+            shelve_length=DEFAULT_SHELVE_LENGTH,
+            shelve_width=DEFAULT_SHELVE_WIDTH,
+            shelve_height=DEFAULT_SHELVE_HEIGHT,
+            periodicity_lower=DEFAULT_PERIODICITY_LOWER,
+            periodicity_upper=DEFAULT_PERIODICITY_UPPER,
+            steps=DEFAULT_STEPS,
+            seed=DEFAULT_SEED,
+            name="rprd")
     except data_collection.EvaluationDone:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
@@ -40,15 +56,17 @@ def cwcw_eval(name: str, module: "f: eval") -> None:
     timestamp = time.time()
     try:
         module.evaluate(
-            render=False,
-            robots=20,
-            spawn=100,
-            shelve_length=5,
-            shelve_width=5,
-            shelve_height=5,
-            periodicity_lower=400,
-            periodicity_upper=5000,
-            steps=1000)
+            render=RENDER,
+            robots=DEFAULT_ROBOTS,
+            spawn=DEFAULT_SPAWN,
+            shelve_length=DEFAULT_SHELVE_LENGTH,
+            shelve_width=DEFAULT_SHELVE_WIDTH,
+            shelve_height=DEFAULT_SHELVE_HEIGHT,
+            periodicity_lower=DEFAULT_PERIODICITY_LOWER,
+            periodicity_upper=DEFAULT_PERIODICITY_UPPER,
+            steps=DEFAULT_STEPS,
+            seed=DEFAULT_SEED,
+            name="cgw")
     except data_collection.EvaluationDone:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
@@ -57,31 +75,35 @@ def sh_eval(name, module: "f: eval") -> None:
     timestamp = time.time()
     try:
         module.evaluate(
-            render=False,
-            robots=20,
-            spawn=40,
-            shelve_length=5,
-            shelve_width=5,
-            shelve_height=5,
-            periodicity_lower=400,
-            periodicity_upper=5000,
-            steps=1000)
+            render=RENDER,
+            robots=DEFAULT_ROBOTS,
+            spawn=DEFAULT_SPAWN,
+            shelve_length=DEFAULT_SHELVE_LENGTH,
+            shelve_width=DEFAULT_SHELVE_WIDTH,
+            shelve_height=DEFAULT_SHELVE_HEIGHT,
+            periodicity_lower=DEFAULT_PERIODICITY_LOWER,
+            periodicity_upper=DEFAULT_PERIODICITY_UPPER,
+            steps=DEFAULT_STEPS,
+            seed=DEFAULT_SEED,
+            name="center")
     except data_collection.EvaluationDone:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
     timestamp = time.time()
     try:
         module.evaluate(
-            render=False,
-            robots=20,
-            spawn=40,
-            shelve_length=5,
-            shelve_width=3,
-            shelve_height=3,
-            periodicity_lower=400,
-            periodicity_upper=5000,
-            steps=1000,
-            even=True)
+            render=RENDER,
+            robots=DEFAULT_ROBOTS,
+            spawn=DEFAULT_SPAWN,
+            shelve_length=DEFAULT_SHELVE_LENGTH,
+            shelve_width=DEFAULT_SHELVE_WIDTH,
+            shelve_height=DEFAULT_SHELVE_HEIGHT,
+            periodicity_lower=DEFAULT_PERIODICITY_LOWER,
+            periodicity_upper=DEFAULT_PERIODICITY_UPPER,
+            steps=DEFAULT_STEPS,
+            even=True,
+            seed=DEFAULT_SEED,
+            name="even")
     except data_collection.EvaluationDone:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
@@ -90,15 +112,17 @@ def pfe_eval(name, module: "f: eval") -> None:
     timestamp = time.time()
     try:
         module.evaluate(
-            render=False,
-            robots=20,
-            spawn=40,
-            shelve_length=5,
-            shelve_width=5,
-            shelve_height=5,
-            periodicity_lower=400,
-            periodicity_upper=5000,
-            steps=1000)
+            render=RENDER,
+            robots=DEFAULT_ROBOTS,
+            spawn=DEFAULT_SPAWN,
+            shelve_length=DEFAULT_SHELVE_LENGTH,
+            shelve_width=DEFAULT_SHELVE_WIDTH,
+            shelve_height=DEFAULT_SHELVE_HEIGHT,
+            periodicity_lower=DEFAULT_PERIODICITY_LOWER,
+            periodicity_upper=DEFAULT_PERIODICITY_UPPER,
+            steps=DEFAULT_STEPS,
+            seed=DEFAULT_SEED,
+            name="pfe")
     except data_collection.EvaluationDone:
         logger.info("Duration {} seconds".format(time.time() - timestamp))
 
@@ -137,12 +161,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--evaluate", help="Evaluate Strategies", action="store_true")
     parser.add_argument(
-        "--make_plots", help="Make plots for results", action="store_true")
-    parser.add_argument(
         "--install",
         help="Install everything -- submodules -- deps -- the whole bunch",
         action="store_true")
     parser.add_argument("--user", help="Install in user", action="store_true")
+    parser.add_argument("--show", help="Show plots", action="store_true")
+
+    parser.add_argument("--plot", help="Create plots", action="store_true")
     args = parser.parse_args()
 
     if args.install:
@@ -151,5 +176,8 @@ if __name__ == "__main__":
     if args.evaluate:
         eval_strategies()
 
-    if args.make_plots:
-        make_plots()
+    if args.plot:
+        scripts.plot.plot(logger)
+
+    if args.show:
+        plt.show()
